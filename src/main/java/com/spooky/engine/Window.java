@@ -1,6 +1,7 @@
-package com.spooky.graphics;
+package com.spooky.engine;
 
 import org.lwjgl.Version;
+import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
@@ -14,7 +15,7 @@ public class Window {
     private String title;
     private long glfwWindow;
 
-    private static Window window = null;
+    private static Window instance = null;
 
     private Window() {
         this.width = 1080;
@@ -23,17 +24,24 @@ public class Window {
     }
 
     public static Window get() {
-        if (window == null) {
-            window = new Window();
-            return window;
+        if (instance == null) {
+            instance = new Window();
         }
-        return window;
+        return instance;
     }
 
     public void run() {
         System.out.println("Hello! " + Version.getVersion());
         init();
         loop();
+
+        // Free memory
+        Callbacks.glfwFreeCallbacks(glfwWindow);
+        GLFW.glfwDestroyWindow(glfwWindow);
+
+        // Terminate GLFW
+        GLFW.glfwTerminate();
+        GLFW.glfwSetErrorCallback(null).free();
     }
 
     private void init() {
@@ -56,6 +64,11 @@ public class Window {
         if (glfwWindow == MemoryUtil.NULL) {
             throw new IllegalStateException("Failed to create GLFW window");
         }
+
+        // Register callbacks
+        GLFW.glfwSetCursorPosCallback(glfwWindow, MouseListener::mousePosCallback);
+        GLFW.glfwSetMouseButtonCallback(glfwWindow, MouseListener::mouseButtonCallback);
+        GLFW.glfwSetScrollCallback(glfwWindow, MouseListener::scrollCallback);
 
         // Make the OpenGL context current this window
         GLFW.glfwMakeContextCurrent(glfwWindow);
