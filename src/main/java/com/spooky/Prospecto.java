@@ -1,12 +1,13 @@
 package com.spooky;
 
-import com.spooky.graphics.Renderer;
+import com.spooky.engine.Window;
 
 /**
  * Main class for Prospecto
  */
 public class Prospecto {
     public static void main(String[] args) {
-        Renderer.init();
+        Window window = Window.get();
+        window.run();
     }
 }
