@@ -4,6 +4,7 @@ import com.jogamp.nativewindow.WindowClosingProtocol;
 import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLProfile;
+import com.jogamp.opengl.util.FPSAnimator;
 
 public class Renderer {
 
@@ -18,6 +19,11 @@ public class Renderer {
         window.setSize(640, 360);
         window.setDefaultCloseOperation(WindowClosingProtocol.WindowClosingMode.DISPOSE_ON_CLOSE);
         window.setResizable(false);
+        window.addGLEventListener(new EventListener());
+
+        FPSAnimator animator = new FPSAnimator(window, 60);
+        animator.start();
+
         window.setVisible(true);
     }
 
