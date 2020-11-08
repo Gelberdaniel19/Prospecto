@@ -2,6 +2,9 @@ package com.spooky.engine;
 
 import org.lwjgl.glfw.GLFW;
 
+/**
+ * Class for checking the state of the keyboard.
+ */
 public class KeyListener {
     private static KeyListener instance;
     private boolean keyPressed[] = new boolean[350];
@@ -26,6 +29,11 @@ public class KeyListener {
         }
     }
 
+    /**
+     * Returns whether or not a given key is pressed.
+     * @param keyCode the key code of the key EX. KeyEvent.VK_SPACE
+     * @return true if the key is pressed.
+     */
     public static boolean isKeyPressed(int keyCode) {
         return get().keyPressed[keyCode];
     }

@@ -1,14 +1,13 @@
 package com.spooky.engine;
 
+/**
+ * Example scene class
+ */
 public class ExampleScene extends Scene {
-
-    public ExampleScene() {
-
-    }
 
     @Override
     public void update(float deltaTime) {
-        System.out.println(deltaTime);
+        System.out.println(1/deltaTime);
     }
 
 }

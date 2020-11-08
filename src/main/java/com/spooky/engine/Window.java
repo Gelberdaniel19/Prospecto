@@ -8,6 +8,9 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
 
+/**
+ * Sets up the window, holds the game loop, and switches scenes.
+ */
 public class Window {
 
     private int width;
@@ -25,6 +28,10 @@ public class Window {
         this.title = "Prospecto";
     }
 
+    /**
+     * Change scenes.
+     * @param sceneIndex the index of the scene to switch to.
+     */
     public static void changeScene(int sceneIndex) {
         if (sceneIndex == 1) {
             currentScene = new ExampleScene();
@@ -38,6 +45,9 @@ public class Window {
         return instance;
     }
 
+    /**
+     * Run the game!
+     */
     public void run() {
         System.out.println("Hello! " + Version.getVersion());
         init();

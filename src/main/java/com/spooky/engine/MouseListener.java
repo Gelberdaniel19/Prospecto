@@ -3,7 +3,7 @@ package com.spooky.engine;
 import org.lwjgl.glfw.GLFW;
 
 /**
- * Singleton class for listening for mouse events.
+ * Class for checking the state of the mouse.
  */
 public class MouseListener {
 
@@ -67,6 +67,9 @@ public class MouseListener {
         get().scrollY = yOff;
     }
 
+    /**
+     * Call this when the frame ends to reset variables for the next frame.
+     */
     public static void endFrame() {
         get().scrollX = 0;
         get().scrollY = 0;
