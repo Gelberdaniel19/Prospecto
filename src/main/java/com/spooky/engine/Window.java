@@ -17,10 +17,18 @@ public class Window {
 
     private static Window instance = null;
 
+    private static Scene currentScene;
+
     private Window() {
         this.width = 1080;
         this.height = 720;
         this.title = "Prospecto";
+    }
+
+    public static void changeScene(int sceneIndex) {
+        if (sceneIndex == 1) {
+            currentScene = new ExampleScene();
+        }
     }
 
     public static Window get() {
@@ -82,9 +90,16 @@ public class Window {
 
         // IMPORTANT! Allows us to use the bindings
         GL.createCapabilities();
+
+        // Set scene
+        changeScene(1);
     }
 
     private void loop() {
+        float beginTime = (float)GLFW.glfwGetTime();
+        float endTime;
+        float dt = -1.0f;
+
         while (!GLFW.glfwWindowShouldClose(glfwWindow)) {
             // Poll events
             GLFW.glfwPollEvents();
@@ -93,8 +108,18 @@ public class Window {
             GL11.glClearColor(1, 1, 1, 1);
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
+            // Update game after first frame
+            if (dt >= 0) {
+                currentScene.update(dt);
+            }
+
             // Swap buffers
             GLFW.glfwSwapBuffers(glfwWindow);
+
+            // Update time
+            endTime = (float)GLFW.glfwGetTime();
+            dt = endTime - beginTime;
+            beginTime = endTime;
         }
     }
 }
