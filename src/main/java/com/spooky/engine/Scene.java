@@ -11,4 +11,11 @@ public abstract class Scene {
      */
     public abstract void update(float deltaTime);
 
+    /**
+     * Call this after construction.
+     */
+    public void init() {
+
+    }
+
 }

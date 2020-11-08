@@ -8,6 +8,8 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
 
+import java.io.IOException;
+
 /**
  * Sets up the window, holds the game loop, and switches scenes.
  */
@@ -36,6 +38,8 @@ public class Window {
         if (sceneIndex == 1) {
             currentScene = new ExampleScene();
         }
+
+        currentScene.init();
     }
 
     public static Window get() {
