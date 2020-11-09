@@ -1,13 +1,15 @@
 package com.spooky.engine.util;
 
 import com.spooky.engine.flow.Window;
+import com.spooky.engine.graphics.Block;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 public class Camera {
-    private Matrix4f projectionMatrix, viewMatrix;
-    private Vector2f position;
+    private final Matrix4f projectionMatrix;
+    private final Matrix4f viewMatrix;
+    private final Vector2f position;
 
     public Camera(Vector2f position) {
         this.position = position;
@@ -18,7 +20,9 @@ public class Camera {
 
     public void adjustProjection() {
         projectionMatrix.identity();
-        projectionMatrix.ortho(0.0f, Window.getWidth(), 0.0f, Window.getHeight(), 0.0f, 100.0f);
+        projectionMatrix.ortho(0.0f, (float)Window.getWidth() / Block.PIXELS_PER_BLOCK,
+                0.0f, (float)Window.getHeight() / Block.PIXELS_PER_BLOCK,
+                0.0f, 100.0f);
     }
 
     public Matrix4f getViewMatrix() {

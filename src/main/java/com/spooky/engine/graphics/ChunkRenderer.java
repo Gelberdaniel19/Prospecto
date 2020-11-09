@@ -2,38 +2,26 @@ package com.spooky.engine.graphics;
 
 import com.spooky.engine.Shader;
 import com.spooky.engine.util.Camera;
+import com.spooky.game.Chunk;
 
 import static org.lwjgl.opengl.ARBVertexArrayObject.*;
 import static org.lwjgl.opengl.GL20.*;
 
-public class BatchPixelRenderer {
-    private final int POS_SIZE = 2;
-    private final int COLOR_SIZE = 3;
+public class ChunkRenderer {
 
-    private final int POS_OFFSET = 0;
-    private final int COLOR_OFFSET = POS_OFFSET + POS_SIZE * Float.BYTES;
     private final int VERTEX_SIZE = 5;
-    private final int VERTEX_SIZE_BYTES = VERTEX_SIZE * Float.BYTES;
 
-    private Pixel[] pixels;
-    private int numPixels;
-    private boolean hasRoom;
-    private float[] vertices;
+    private final Chunk chunk;
+    private final float[] vertices;
 
     private int vaoID, vboID;
-    private int maxBatchSize;
-    private Shader shader;
+    private final int MAX_BATCH_SIZE = Chunk.CHUNK_SIZE * Chunk.CHUNK_SIZE;
+    private final Shader shader;
 
-    public BatchPixelRenderer(int maxBatchSize) {
+    public ChunkRenderer(Chunk chunk) {
+        this.chunk = chunk;
         this.shader = new Shader("vertex.glsl", "fragment.glsl");
-        this.maxBatchSize = maxBatchSize;
-        this.pixels = new Pixel[maxBatchSize];
-
-        // 4 vertices per pixel
-        this.vertices = new float[maxBatchSize * 4 * VERTEX_SIZE];
-
-        this.numPixels = 0;
-        this.hasRoom = true;
+        this.vertices = new float[MAX_BATCH_SIZE * 4 * VERTEX_SIZE];
     }
 
     public void start() {
@@ -53,14 +41,54 @@ public class BatchPixelRenderer {
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
 
         // Enable the buffer attribute pointers
+        int POS_SIZE = 2;
+        int POS_OFFSET = 0;
+        int VERTEX_SIZE_BYTES = VERTEX_SIZE * Float.BYTES;
         glVertexAttribPointer(0, POS_SIZE, GL_FLOAT, false, VERTEX_SIZE_BYTES, POS_OFFSET);
         glEnableVertexAttribArray(0);
 
+        int COLOR_SIZE = 3;
+        int COLOR_OFFSET = POS_OFFSET + POS_SIZE * Float.BYTES;
         glVertexAttribPointer(1, COLOR_SIZE, GL_FLOAT, false, VERTEX_SIZE_BYTES, COLOR_OFFSET);
         glEnableVertexAttribArray(1);
     }
 
     public void render(Camera camera) {
+        // If needs to update
+        if (chunk.isUpdatedSinceDraw()) {
+            System.out.println("Needs to update");
+
+            // Load pixels from chunk
+            for (int i = 0; i < Chunk.CHUNK_SIZE; i++) {
+                for (int j = 0; j < Chunk.CHUNK_SIZE; j++) {
+                    // Find offset within vertex array
+                    int index = i * Chunk.CHUNK_SIZE + j;
+                    int offset = index * 4 * VERTEX_SIZE;
+
+                    // Add vertices with the appropriate properties
+                    float xAdd = 1.0f;
+                    float yAdd = 1.0f;
+                    for (int k = 0; k < 4; k++) {
+                        if (k == 1) yAdd = 0.0f;
+                        else if (k == 2) xAdd = 0.0f;
+                        else if (k == 3) yAdd = 1.0f;
+
+                        // Set position and color into vertex array
+                        Block block = chunk.getPixel(i, j);
+                        vertices[offset + 0] = block.pos.x + xAdd;
+                        vertices[offset + 1] = block.pos.y + yAdd;
+                        vertices[offset + 2] = block.color.fGetR();
+                        vertices[offset + 3] = block.color.fGetG();
+                        vertices[offset + 4] = block.color.fGetB();
+
+                        offset += VERTEX_SIZE;
+                    }
+                }
+            }
+
+            chunk.setUpdatedSinceDraw(false);
+        }
+
         // For now, we will re-buffer all data every frame
         glBindBuffer(GL_ARRAY_BUFFER, vboID);
         glBufferSubData(GL_ARRAY_BUFFER, 0, vertices);
@@ -74,7 +102,7 @@ public class BatchPixelRenderer {
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
 
-        glDrawElements(GL_TRIANGLES, this.numPixels * 6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, Chunk.CHUNK_SIZE * Chunk.CHUNK_SIZE * 6, GL_UNSIGNED_INT, 0);
 
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
@@ -83,56 +111,10 @@ public class BatchPixelRenderer {
         shader.detach();
     }
 
-    public void addPixel(Pixel pixel) {
-        // Get index and add renderObject
-        int index = this.numPixels;
-        this.pixels[index] = pixel;
-        this.numPixels++;
-
-        // Add properties to local vertices array
-        loadVertexProperties(index);
-
-        if (numPixels >= this.maxBatchSize) {
-            this.hasRoom = false;
-        }
-    }
-
-    private void loadVertexProperties(int index) {
-        Pixel pixel = this.pixels[index];
-        Color color = pixel.getColor();
-
-        // Find offset within array (4 vertices per sprite)
-        int offset = index * 4 * VERTEX_SIZE;
-
-        // Add vertices with the appropriate properties
-        float xAdd = 1.0f;
-        float yAdd = 1.0f;
-        for (int i=0; i < 4; i++) {
-            if (i == 1) {
-                yAdd = 0.0f;
-            } else if (i == 2) {
-                xAdd = 0.0f;
-            } else if (i == 3) {
-                yAdd = 1.0f;
-            }
-
-            // Load position
-            vertices[offset] = pixel.getPos().getX() + (xAdd * Pixel.PIXEL_SIZE);
-            vertices[offset + 1] = pixel.getPos().getY() + (yAdd * Pixel.PIXEL_SIZE);
-
-            // Load color
-            vertices[offset + 2] = color.fGetR();
-            vertices[offset + 3] = color.fGetG();
-            vertices[offset + 4] = color.fGetB();
-
-            offset += VERTEX_SIZE;
-        }
-    }
-
     private int[] generateIndices() {
         // 6 indices per quad (3 per triangle)
-        int[] elements = new int[6 * maxBatchSize];
-        for (int i = 0; i < maxBatchSize; i++) {
+        int[] elements = new int[6 * MAX_BATCH_SIZE];
+        for (int i = 0; i < MAX_BATCH_SIZE; i++) {
             loadElementIndices(elements, i);
         }
         return elements;
@@ -144,7 +126,7 @@ public class BatchPixelRenderer {
 
         // 3, 2, 0, 0, 2, 1        7, 6, 4, 4, 6, 5
         // Triangle 1
-        elements[offsetArrayIndex] = offset + 3;
+        elements[offsetArrayIndex + 0] = offset + 3;
         elements[offsetArrayIndex + 1] = offset + 2;
         elements[offsetArrayIndex + 2] = offset + 0;
 
@@ -152,10 +134,6 @@ public class BatchPixelRenderer {
         elements[offsetArrayIndex + 3] = offset + 0;
         elements[offsetArrayIndex + 4] = offset + 2;
         elements[offsetArrayIndex + 5] = offset + 1;
-    }
-
-    public boolean hasRoom() {
-        return this.hasRoom;
     }
 
 }

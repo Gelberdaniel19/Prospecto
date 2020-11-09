@@ -1,12 +1,7 @@
 package com.spooky.engine.graphics;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
-@Data
-@AllArgsConstructor
 public class Color {
-    int r, g, b;
+    public int r, g, b;
 
     float fGetR() {
         return (float)(r) / 255;
@@ -18,6 +13,12 @@ public class Color {
 
     float fGetB() {
         return (float)(b) / 255;
+    }
+
+    public Color(int r, int g, int b) {
+        this.r = r;
+        this.g = g;
+        this.b = b;
     }
 
     public static Color fromFloats(float r, float g, float b) {
