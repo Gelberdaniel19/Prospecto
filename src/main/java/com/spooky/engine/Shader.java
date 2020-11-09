@@ -1,4 +1,4 @@
-package com.spooky.engine.shader;
+package com.spooky.engine;
 
 import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;

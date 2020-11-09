@@ -1,4 +1,4 @@
-package com.spooky.engine;
+package com.spooky.engine.util;
 
 import org.lwjgl.glfw.GLFW;
 

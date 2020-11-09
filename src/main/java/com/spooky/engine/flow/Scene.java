@@ -1,4 +1,6 @@
-package com.spooky.engine;
+package com.spooky.engine.flow;
+
+import com.spooky.engine.util.Camera;
 
 /**
  * Abstract scene class which contains functions that a scene would use.
@@ -18,6 +20,10 @@ public abstract class Scene {
      */
     public void init() {
 
+    }
+    
+    public Camera getCamera() {
+        return camera;
     }
 
 }

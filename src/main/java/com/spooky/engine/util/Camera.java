@@ -1,5 +1,6 @@
-package com.spooky.engine;
+package com.spooky.engine.util;
 
+import com.spooky.engine.flow.Window;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;

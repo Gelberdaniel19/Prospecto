@@ -1,5 +1,8 @@
-package com.spooky.engine;
+package com.spooky.engine.flow;
 
+import com.spooky.game.ExampleScene;
+import com.spooky.engine.util.KeyListener;
+import com.spooky.engine.util.MouseListener;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
@@ -7,8 +10,6 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
-
-import java.io.IOException;
 
 /**
  * Sets up the window, holds the game loop, and switches scenes.
@@ -143,5 +144,9 @@ public class Window {
 
     public static int getHeight() {
         return get().height;
+    }
+
+    public static Scene getScene() {
+        return currentScene;
     }
 }
