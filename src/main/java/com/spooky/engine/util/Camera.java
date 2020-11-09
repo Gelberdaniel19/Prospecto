@@ -39,4 +39,8 @@ public class Camera {
     public Matrix4f getProjectionMatrix() {
         return projectionMatrix;
     }
+
+    public void move(Vector2f delta) {
+        position.add(delta);
+    }
 }

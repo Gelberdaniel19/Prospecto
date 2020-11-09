@@ -54,7 +54,7 @@ public class Window {
      * Run the game!
      */
     public void run() {
-        System.out.println("Hello! " + Version.getVersion());
+        System.out.println("Running LWJGL version " + Version.getVersion() + "!");
         init();
         loop();
 
