@@ -31,6 +31,10 @@ public class Color {
         return new Color(r, g, b);
     }
 
+    public static Color grey(int val) {
+        return new Color(val, val, val);
+    }
+
     public static final Color RED = new Color(255, 0, 0);
     public static final Color GREEN = new Color(255, 0, 0);
     public static final Color BLUE = new Color(255, 0, 0);
