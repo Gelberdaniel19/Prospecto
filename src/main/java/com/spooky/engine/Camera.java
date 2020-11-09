@@ -1,6 +1,5 @@
 package com.spooky.engine;
 
-import com.spooky.engine.Window;
 import com.spooky.game.chunk.Block;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;

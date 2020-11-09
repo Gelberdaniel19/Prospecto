@@ -1,6 +1,5 @@
 package com.spooky.game;
 
-import com.spooky.game.chunk.ChunkRenderer;
 import com.spooky.engine.Color;
 import com.spooky.game.chunk.Block;
 import com.spooky.engine.Camera;
@@ -24,27 +23,13 @@ public class ExampleScene extends Scene {
 
     @Override
     public void update(float deltaTime) {
-        //System.out.println(1 / deltaTime);
-        if (KeyListener.isKeyPressed(KeyEvent.VK_A)) {
-            camera.move(new Vector2f(-PAN_SPEED * deltaTime, 0.0f));
-        }
-        if (KeyListener.isKeyPressed(KeyEvent.VK_D)) {
-            camera.move(new Vector2f(PAN_SPEED * deltaTime, 0.0f));
-        }
-        if (KeyListener.isKeyPressed(KeyEvent.VK_S)) {
-            camera.move(new Vector2f(0.0f, -PAN_SPEED * deltaTime));
-        }
-        if (KeyListener.isKeyPressed(KeyEvent.VK_W)) {
-            camera.move(new Vector2f(0.0f, PAN_SPEED * deltaTime));
-        }
-        if (KeyListener.isKeyPressed(KeyEvent.VK_SPACE)) {
-            for (int i = 0; i < Chunk.CHUNK_SIZE; i++) {
-                for (int j = 0; j < Chunk.CHUNK_SIZE; j++) {
-                    Block block = chunk.getPixel(i, j);
-                    chunk.setPixelColor(i, j, new Color(block.color.r + 1, block.color.g, block.color.b));
-                }
-            }
-        }
+        // Camera panning
+        if (KeyListener.isKeyPressed(KeyEvent.VK_A)) camera.move(new Vector2f(-PAN_SPEED * deltaTime, 0.0f));
+        if (KeyListener.isKeyPressed(KeyEvent.VK_D)) camera.move(new Vector2f(PAN_SPEED * deltaTime, 0.0f));
+        if (KeyListener.isKeyPressed(KeyEvent.VK_S)) camera.move(new Vector2f(0.0f, -PAN_SPEED * deltaTime));
+        if (KeyListener.isKeyPressed(KeyEvent.VK_W)) camera.move(new Vector2f(0.0f, PAN_SPEED * deltaTime));
+
+        // Render the chunk
         chunk.render();
     }
 

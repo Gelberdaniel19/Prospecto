@@ -6,25 +6,26 @@ import org.lwjgl.glfw.GLFW;
  * Class for checking the state of the keyboard.
  */
 public class KeyListener {
+
     private static KeyListener instance;
     private boolean keyPressed[] = new boolean[350];
 
-    private KeyListener(){
+    private KeyListener() {
 
     }
 
-    public static KeyListener get(){
-        if(instance == null){
+    public static KeyListener get() {
+        if (instance == null) {
             instance = new KeyListener();
         }
 
         return instance;
     }
 
-    public static void keyCallback(long window, int key, int scancode, int action, int mods){
-        if(action == GLFW.GLFW_PRESS){
+    public static void keyCallback(long window, int key, int scancode, int action, int mods) {
+        if (action == GLFW.GLFW_PRESS) {
             get().keyPressed[key] = true;
-        } else if (action == GLFW.GLFW_RELEASE){
+        } else if (action == GLFW.GLFW_RELEASE) {
             get().keyPressed[key] = false;
         }
     }
