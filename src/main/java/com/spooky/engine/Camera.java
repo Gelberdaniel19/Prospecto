@@ -14,13 +14,15 @@ public class Camera {
         this.position = position;
         this.projectionMatrix = new Matrix4f();
         this.viewMatrix = new Matrix4f();
-        adjustProjection();
+        adjustProjectionToPixelsPerBlock(Block.PIXELS_PER_BLOCK);
     }
 
-    public void adjustProjection() {
+    public void adjustProjectionToPixelsPerBlock(int pixelsPerBlock) {
         projectionMatrix.identity();
-        projectionMatrix.ortho(0.0f, (float)Window.getWidth() / Block.PIXELS_PER_BLOCK,
-                0.0f, (float)Window.getHeight() / Block.PIXELS_PER_BLOCK,
+        float windowUnitsWide = (float)Window.getWidth() / pixelsPerBlock;
+        float windowUnitsTall = (float)Window.getHeight() / pixelsPerBlock;
+        projectionMatrix.ortho(-windowUnitsWide / 2, windowUnitsWide / 2,
+                -windowUnitsTall / 2, windowUnitsTall / 2,
                 0.0f, 100.0f);
     }
 

@@ -37,7 +37,7 @@ public class ExampleScene extends Scene {
     public void init() {
         System.out.println("Blocks in chunk: " + (Chunk.CHUNK_SIZE * Chunk.CHUNK_SIZE));
         camera = new Camera(new Vector2f());
-        chunk = new RenderableChunk(1, 1, camera);
+        chunk = new RenderableChunk(0, 0, camera);
         chunk.generate(Simplex4Octave.fromRandomSeed());
     }
 }
