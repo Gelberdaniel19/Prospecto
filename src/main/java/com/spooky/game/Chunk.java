@@ -2,6 +2,7 @@ package com.spooky.game;
 
 import com.spooky.engine.graphics.Color;
 import com.spooky.engine.graphics.Block;
+import com.spooky.game.noise.IGreyscaleGenerator2D;
 import org.joml.Vector2i;
 
 public class Chunk {
@@ -21,6 +22,17 @@ public class Chunk {
         this.x = x;
         this.y = y;
         updatedSinceDraw = true;
+    }
+
+    public void generate(IGreyscaleGenerator2D generator) {
+        for (int i = 0; i < CHUNK_SIZE; i++) {
+            for (int j = 0; j < CHUNK_SIZE; j++) {
+                int xCoord = x * CHUNK_SIZE + i;
+                int yCoord = y * CHUNK_SIZE + j;
+                float grey = generator.getValue(xCoord, yCoord) * 128 + 128;
+                setPixel(i, j, new Block(new Vector2i(xCoord, yCoord), Color.grey((int)grey)));
+            }
+        }
     }
 
     /**
