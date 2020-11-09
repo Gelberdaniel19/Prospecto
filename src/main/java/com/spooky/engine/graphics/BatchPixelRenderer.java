@@ -1,16 +1,12 @@
 package com.spooky.engine.graphics;
 
 import com.spooky.engine.Shader;
-import com.spooky.engine.flow.Window;
 import com.spooky.engine.util.Camera;
-import org.joml.Vector4f;
 
 import static org.lwjgl.opengl.ARBVertexArrayObject.*;
 import static org.lwjgl.opengl.GL20.*;
 
 public class BatchPixelRenderer {
-    private final float PIXEL_SIZE = 100.0f;
-
     private final int POS_SIZE = 2;
     private final int COLOR_SIZE = 3;
 
@@ -121,8 +117,8 @@ public class BatchPixelRenderer {
             }
 
             // Load position
-            vertices[offset] = pixel.getPos().getX() + (xAdd * PIXEL_SIZE);
-            vertices[offset + 1] = pixel.getPos().getY() + (yAdd * PIXEL_SIZE);
+            vertices[offset] = pixel.getPos().getX() + (xAdd * Pixel.PIXEL_SIZE);
+            vertices[offset + 1] = pixel.getPos().getY() + (yAdd * Pixel.PIXEL_SIZE);
 
             // Load color
             vertices[offset + 2] = color.fGetR();

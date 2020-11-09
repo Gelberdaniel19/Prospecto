@@ -7,6 +7,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Pixel {
+    public static final int PIXEL_SIZE = 4;
+
     private Transform pos;
     private Color color;
 }

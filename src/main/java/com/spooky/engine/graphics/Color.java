@@ -2,7 +2,6 @@ package com.spooky.engine.graphics;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.joml.Vector4f;
 
 @Data
 @AllArgsConstructor
@@ -21,7 +20,24 @@ public class Color {
         return (float)(b) / 255;
     }
 
-    Vector4f getColor4f() {
-        return new Vector4f(fGetR(), fGetG(), fGetB(), 1);
+    public static Color fromFloats(float r, float g, float b) {
+        return new Color((int)(r * 255), (int)(g * 255), (int)(b * 255));
     }
+
+    public static Color random() {
+        int r = (int)(Math.random() * 256);
+        int g = (int)(Math.random() * 256);
+        int b = (int)(Math.random() * 256);
+        return new Color(r, g, b);
+    }
+
+    public static final Color RED = new Color(255, 0, 0);
+    public static final Color GREEN = new Color(255, 0, 0);
+    public static final Color BLUE = new Color(255, 0, 0);
+    public static final Color ORANGE = new Color(255, 150, 0);
+    public static final Color YELLOW = new Color(255, 255, 0);
+    public static final Color AQUA = new Color(0, 255, 255);
+    public static final Color PURPLE = new Color(150, 0, 255);
+    public static final Color MAGENTA = new Color(255, 0, 255);
+
 }
