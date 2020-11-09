@@ -1,6 +1,7 @@
 package com.spooky.engine;
 
 import com.spooky.engine.shader.Shader;
+import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.ARBVertexArrayObject;
 import org.lwjgl.opengl.GL20;
@@ -16,10 +17,10 @@ public class ExampleScene extends Scene {
     private int vertexID, fragmentID, shaderProgram;
 
     private float[] vertexArray = {
-            0.5f, -0.5f, 0.0f,       1.0f, 0.0f, 0.0f, 1.0f, // Bottom right 0
-            -0.5f,  0.5f, 0.0f,       0.0f, 1.0f, 0.0f, 1.0f, // Top left     1
-            0.5f,  0.5f, 0.0f ,      1.0f, 0.0f, 1.0f, 1.0f, // Top right    2
-            -0.5f, -0.5f, 0.0f,       1.0f, 1.0f, 0.0f, 1.0f, // Bottom left  3
+            150f, 50f, 0.0f,       1.0f, 0.0f, 0.0f, 1.0f, // Bottom right 0
+            50f,  150f, 0.0f,       0.0f, 1.0f, 0.0f, 1.0f, // Top left     1
+            150f,  150f, 0.0f ,      1.0f, 0.0f, 1.0f, 1.0f, // Top right    2
+            50f, 50f, 0.0f,       1.0f, 1.0f, 0.0f, 1.0f, // Bottom left  3
     };
 
     private int[] elementArray = {
@@ -34,6 +35,8 @@ public class ExampleScene extends Scene {
     @Override
     public void update(float deltaTime) {
         shader.use();
+        shader.uploadMat4f("uProjection", camera.getProjectionMatrix());
+        shader.uploadMat4f("uView", camera.getViewMatrix());
 
         // Bind the VAO that we're using
         ARBVertexArrayObject.glBindVertexArray(vaoID);
@@ -55,6 +58,9 @@ public class ExampleScene extends Scene {
 
     @Override
     public void init() {
+        // Set up camera
+        camera = new Camera(new Vector2f());
+
         // Set up shader
         shader = new Shader("vertex.glsl", "fragment.glsl");
 

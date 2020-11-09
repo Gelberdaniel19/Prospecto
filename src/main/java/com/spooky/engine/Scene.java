@@ -5,6 +5,8 @@ package com.spooky.engine;
  */
 public abstract class Scene {
 
+    protected Camera camera;
+
     /**
      * Called once per frame.
      * @param deltaTime time elapsed in seconds since last call.

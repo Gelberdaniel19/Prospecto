@@ -1,9 +1,12 @@
 package com.spooky.engine.shader;
 
+import org.joml.Matrix4f;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.FloatBuffer;
 import java.nio.file.Files;
 
 public class Shader {
@@ -74,6 +77,13 @@ public class Shader {
 
     public void detach() {
         GL20.glUseProgram(0);
+    }
+
+    public void uploadMat4f(String varName, Matrix4f mat) {
+        int varLocation = GL20.glGetUniformLocation(shaderID, varName);
+        FloatBuffer matBuffer = BufferUtils.createFloatBuffer(16);
+        mat.get(matBuffer);
+        GL20.glUniformMatrix4fv(varLocation, false, matBuffer);
     }
 
 }
