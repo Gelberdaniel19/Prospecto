@@ -1,8 +1,6 @@
-package com.spooky.engine.flow;
+package com.spooky.engine;
 
 import com.spooky.game.ExampleScene;
-import com.spooky.engine.util.KeyListener;
-import com.spooky.engine.util.MouseListener;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;

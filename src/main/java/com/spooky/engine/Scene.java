@@ -1,6 +1,4 @@
-package com.spooky.engine.flow;
-
-import com.spooky.engine.util.Camera;
+package com.spooky.engine;
 
 /**
  * Abstract scene class which contains functions that a scene would use.

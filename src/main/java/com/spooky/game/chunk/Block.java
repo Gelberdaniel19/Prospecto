@@ -1,5 +1,6 @@
-package com.spooky.engine.graphics;
+package com.spooky.game.chunk;
 
+import com.spooky.engine.Color;
 import org.joml.Vector2i;
 
 public class Block {

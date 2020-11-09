@@ -1,6 +1,6 @@
 package com.spooky;
 
-import com.spooky.engine.flow.Window;
+import com.spooky.engine.Window;
 
 /**
  * Main class for Prospecto

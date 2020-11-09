@@ -1,7 +1,7 @@
-package com.spooky.engine.util;
+package com.spooky.engine;
 
-import com.spooky.engine.flow.Window;
-import com.spooky.engine.graphics.Block;
+import com.spooky.engine.Window;
+import com.spooky.game.chunk.Block;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;

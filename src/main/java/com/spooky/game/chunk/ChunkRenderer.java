@@ -1,8 +1,7 @@
-package com.spooky.engine.graphics;
+package com.spooky.game.chunk;
 
 import com.spooky.engine.Shader;
-import com.spooky.engine.util.Camera;
-import com.spooky.game.Chunk;
+import com.spooky.engine.Camera;
 
 import static org.lwjgl.opengl.ARBVertexArrayObject.*;
 import static org.lwjgl.opengl.GL20.*;

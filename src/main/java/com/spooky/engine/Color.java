@@ -1,17 +1,17 @@
-package com.spooky.engine.graphics;
+package com.spooky.engine;
 
 public class Color {
     public int r, g, b;
 
-    float fGetR() {
+    public float fGetR() {
         return (float)(r) / 255;
     }
 
-    float fGetG() {
+    public float fGetG() {
         return (float)(g) / 255;
     }
 
-    float fGetB() {
+    public float fGetB() {
         return (float)(b) / 255;
     }
 

@@ -1,7 +1,6 @@
-package com.spooky.game;
+package com.spooky.game.chunk;
 
-import com.spooky.engine.graphics.Color;
-import com.spooky.engine.graphics.Block;
+import com.spooky.engine.Color;
 import com.spooky.game.noise.IGreyscaleGenerator2D;
 import org.joml.Vector2i;
 
