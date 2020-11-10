@@ -84,11 +84,11 @@ public class ChunkRenderer {
             }
 
             chunk.setUpdatedSinceDraw(false);
-        }
 
-        // For now, we will re-buffer all data every frame
-        glBindBuffer(GL_ARRAY_BUFFER, vboID);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, vertices);
+            // Re-buffer on updates (used to be every frame)
+            glBindBuffer(GL_ARRAY_BUFFER, vboID);
+            glBufferSubData(GL_ARRAY_BUFFER, 0, vertices);
+        }
 
         // Use shader
         shader.use();

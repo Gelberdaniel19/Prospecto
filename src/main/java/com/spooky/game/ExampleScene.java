@@ -37,42 +37,42 @@ public class ExampleScene extends Scene {
     public void init() {
         System.out.println("Blocks in chunk: " + (Chunk.CHUNK_SIZE * Chunk.CHUNK_SIZE));
         camera = new Camera(new Vector2f());
-        IGreyscaleGenerator2D generator =
-                Sharpen.build(
-                        Add.build(
-                                Multiply.build(
-                                        Remap.build(Simplex.buildRandom().withFrequency(0.01f))
-                                                .withFromMin(0.92f)
-                                                .withToMin(1f)
-                                                .withToMax(2.3f),
-                                        Simplex.buildRandom().withFrequency(0.02f)
-                                                .withFractal(10)
-                                ),
-                                Simplex.buildRandom().withFrequency(0.02f).withFractal(10)
-                        )
-                )
-                .withIterations(2);
+//        IGreyscaleGenerator2D generator =
+//                Sharpen.build(
+//                        Add.build(
+//                                Multiply.build(
+//                                        Remap.build(Simplex.buildRandom().withFrequency(0.01f))
+//                                                .withFromMin(0.92f)
+//                                                .withToMin(1f)
+//                                                .withToMax(2.3f),
+//                                        Simplex.buildRandom().withFrequency(0.02f)
+//                                                .withFractal(10)
+//                                ),
+//                                Simplex.buildRandom().withFrequency(0.02f).withFractal(10)
+//                        )
+//                )
+//                .withIterations(2);
+//
+//        generator = Remap.build(generator)
+//                .withFromMax(-0.5f);
+//
+//        generator = Multiply.build(
+//                PositionOutput.build().withYMult(-30),
+//                generator
+//        );
+//
+//        generator = Combine.build(
+//                generator,
+//                Multiply.build(
+//                        Simplex.buildRandom().withFrequency(0.01f).withFractal(6),
+//                        PositionOutput.build().withYMult(-15).withYOff(-10)
+//                )
+//        );
+//
+//        generator = DomainScale.build(generator, 0.03f);
+//        generator = Clampify.build(generator).withThreshold(-0.3f);
 
-        generator = Remap.build(generator)
-                .withFromMax(-0.5f);
-
-        generator = Multiply.build(
-                PositionOutput.build().withYMult(-30),
-                generator
-        );
-
-        generator = Combine.build(
-                generator,
-                Multiply.build(
-                        Simplex.buildRandom().withFrequency(0.01f).withFractal(6),
-                        PositionOutput.build().withYMult(-15).withYOff(-10)
-                )
-        );
-
-        generator = DomainScale.build(generator, 0.03f);
-        generator = Clampify.build(generator).withThreshold(-0.3f);
-
-        chunkLoader = new ChunkLoader(2, 1, generator, camera);
+        chunkLoader = new ChunkLoader(2, 1, Simplex.buildRandom(), camera);
         chunkLoader.update(camera.getPosition());
     }
 }
