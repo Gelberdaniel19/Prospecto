@@ -6,7 +6,7 @@ import org.joml.Vector2i;
 
 public class Chunk {
     // Width and height of each chunk
-    public static final int CHUNK_SIZE = 128;
+    public static final int CHUNK_SIZE = 16;
 
     // Position of the chunk is where the bottom left is times 128
     private int x;

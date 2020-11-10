@@ -55,8 +55,6 @@ public class ChunkRenderer {
     public void render(Camera camera) {
         // If needs to update
         if (chunk.isUpdatedSinceDraw()) {
-            System.out.println("Needs to update");
-
             // Load pixels from chunk
             for (int i = 0; i < Chunk.CHUNK_SIZE; i++) {
                 for (int j = 0; j < Chunk.CHUNK_SIZE; j++) {

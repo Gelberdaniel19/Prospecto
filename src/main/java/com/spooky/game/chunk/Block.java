@@ -4,7 +4,7 @@ import com.spooky.engine.Color;
 import org.joml.Vector2i;
 
 public class Block {
-    public final static int PIXELS_PER_BLOCK = 4;
+    public final static int PIXELS_PER_BLOCK = 8;
 
     public Vector2i pos;
     public Color color;

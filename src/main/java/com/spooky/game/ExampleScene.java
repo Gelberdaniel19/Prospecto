@@ -27,10 +27,7 @@ public class ExampleScene extends Scene {
         if (KeyListener.isKeyPressed(KeyEvent.VK_S)) camera.move(new Vector2f(0.0f, -PAN_SPEED * deltaTime));
         if (KeyListener.isKeyPressed(KeyEvent.VK_W)) camera.move(new Vector2f(0.0f, PAN_SPEED * deltaTime));
 
-        // Update
         chunkLoader.update(camera.getPosition());
-
-        // Render the chunk
         chunkLoader.render();
     }
 
@@ -38,7 +35,7 @@ public class ExampleScene extends Scene {
     public void init() {
         System.out.println("Blocks in chunk: " + (Chunk.CHUNK_SIZE * Chunk.CHUNK_SIZE));
         camera = new Camera(new Vector2f());
-        chunkLoader = new ChunkLoader(2, 1, Simplex4Octave.fromRandomSeed(), camera);
+        chunkLoader = new ChunkLoader(1, 1, Simplex4Octave.fromRandomSeed(), camera);
         chunkLoader.update(camera.getPosition());
     }
 }
