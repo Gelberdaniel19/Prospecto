@@ -64,7 +64,7 @@ public class Chunk {
      * @param y coordinate in chunk.
      * @return copy of the pixel.
      */
-    public Block getPixel(int x, int y) {
+    public Block getBlock(int x, int y) {
         return chunkBlocks[x][y].copy();
     }
 
@@ -87,6 +87,14 @@ public class Chunk {
         if (y < 0) ret.y--;
         if (x < 0) ret.x--;
         return ret;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 
 }

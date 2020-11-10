@@ -73,7 +73,7 @@ public class ChunkRenderer {
                         else if (k == 3) yAdd = 1.0f;
 
                         // Set position and color into vertex array
-                        Block block = chunk.getPixel(i, j);
+                        Block block = chunk.getBlock(i, j);
                         vertices[offset + 0] = block.pos.x + xAdd;
                         vertices[offset + 1] = block.pos.y + yAdd;
                         vertices[offset + 2] = block.color.fGetR();

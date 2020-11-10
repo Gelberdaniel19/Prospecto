@@ -1,12 +1,10 @@
 package com.spooky.game;
 
-import com.spooky.engine.Color;
-import com.spooky.game.chunk.Block;
 import com.spooky.engine.Camera;
 import com.spooky.engine.Scene;
 import com.spooky.engine.KeyListener;
 import com.spooky.game.chunk.Chunk;
-import com.spooky.game.chunk.RenderableChunk;
+import com.spooky.game.chunk.ChunkLoader;
 import com.spooky.game.noise.Simplex4Octave;
 import org.joml.Vector2f;
 
@@ -17,7 +15,7 @@ import java.awt.event.KeyEvent;
  */
 public class ExampleScene extends Scene {
 
-    private RenderableChunk chunk;
+    private ChunkLoader chunkLoader;
 
     private final float PAN_SPEED = 50;
 
@@ -29,15 +27,18 @@ public class ExampleScene extends Scene {
         if (KeyListener.isKeyPressed(KeyEvent.VK_S)) camera.move(new Vector2f(0.0f, -PAN_SPEED * deltaTime));
         if (KeyListener.isKeyPressed(KeyEvent.VK_W)) camera.move(new Vector2f(0.0f, PAN_SPEED * deltaTime));
 
+        // Update
+        chunkLoader.update(camera.getPosition());
+
         // Render the chunk
-        chunk.render();
+        chunkLoader.render();
     }
 
     @Override
     public void init() {
         System.out.println("Blocks in chunk: " + (Chunk.CHUNK_SIZE * Chunk.CHUNK_SIZE));
         camera = new Camera(new Vector2f());
-        chunk = new RenderableChunk(0, 0, camera);
-        chunk.generate(Simplex4Octave.fromRandomSeed());
+        chunkLoader = new ChunkLoader(2, 1, Simplex4Octave.fromRandomSeed(), camera);
+        chunkLoader.update(camera.getPosition());
     }
 }

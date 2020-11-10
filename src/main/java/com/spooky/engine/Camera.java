@@ -8,6 +8,7 @@ import org.joml.Vector3f;
 public class Camera {
     private final Matrix4f projectionMatrix;
     private final Matrix4f viewMatrix;
+
     private final Vector2f position;
 
     public Camera(Vector2f position) {
@@ -43,5 +44,9 @@ public class Camera {
 
     public void move(Vector2f delta) {
         position.add(delta);
+    }
+
+    public Vector2f getPosition() {
+        return position;
     }
 }
