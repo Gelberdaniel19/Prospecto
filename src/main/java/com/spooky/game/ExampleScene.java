@@ -17,7 +17,7 @@ public class ExampleScene extends Scene {
 
     private ChunkLoader chunkLoader;
 
-    private final float PAN_SPEED = 100;
+    private final float PAN_SPEED = 200;
 
     private int cooldown = 0;
 

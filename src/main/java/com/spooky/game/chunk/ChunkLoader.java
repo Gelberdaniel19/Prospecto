@@ -73,7 +73,7 @@ public class ChunkLoader {
             }
             // Update rightmost col
             for (int i = 0; i < chunks[0].length; i++) {
-                chunks[chunks.length-1][i] = new RenderableChunk(cameraChunk.x + renderDistanceX, cameraChunk.y - renderDistanceY + i, camera);
+                chunks[chunks.length-1][i] = new RenderableChunk(cameraChunk.x + renderDistanceX, centerChunk.y - renderDistanceY + i, camera);
                 chunks[chunks.length-1][i].generate(generator2D);
             }
         }
@@ -87,7 +87,7 @@ public class ChunkLoader {
             }
             // Update leftmost column
             for (int i = 0; i < chunks[0].length; i++) {
-                chunks[0][i] = new RenderableChunk(cameraChunk.x - renderDistanceX, cameraChunk.y - renderDistanceY + i, camera);
+                chunks[0][i] = new RenderableChunk(cameraChunk.x - renderDistanceX, centerChunk.y - renderDistanceY + i, camera);
                 chunks[0][i].generate(generator2D);
             }
         }
