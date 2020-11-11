@@ -3,7 +3,7 @@ package com.spooky.game.noise;
 /**
  * Returns a value of either 1 or -1 based on the threshold
  */
-public class Clampify implements IGreyscaleGenerator2D {
+public class Clampify implements IBooleanGenerator2D {
 
     private final IGreyscaleGenerator2D generator;
     private float threshold = 0;
@@ -22,9 +22,9 @@ public class Clampify implements IGreyscaleGenerator2D {
     }
 
     @Override
-    public float getValue(float x, float y) {
+    public boolean getValue(float x, float y) {
         float val = generator.getValue(x, y);
-        return val > threshold ? 1 : -1;
+        return val > threshold;
     }
 
 }

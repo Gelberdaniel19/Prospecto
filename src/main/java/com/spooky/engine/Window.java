@@ -96,7 +96,7 @@ public class Window {
         GLFW.glfwMakeContextCurrent(glfwWindow);
 
         // Enable VSync
-        GLFW.glfwSwapInterval(0);
+        GLFW.glfwSwapInterval(1);
 
         // Make the window visible
         GLFW.glfwShowWindow(glfwWindow);

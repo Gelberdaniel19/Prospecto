@@ -1,12 +1,12 @@
 package com.spooky.game.chunk;
 
 import com.spooky.engine.Color;
-import com.spooky.game.noise.IGreyscaleGenerator2D;
+import com.spooky.game.noise.IBooleanGenerator2D;
 import org.joml.Vector2i;
 
 public class Chunk {
     // Width and height of each chunk
-    public static final int CHUNK_SIZE = 100;
+    public static final int CHUNK_SIZE = 4;
 
     // Position of the chunk is where the bottom left is times 128
     private int x;
@@ -23,13 +23,16 @@ public class Chunk {
         updatedSinceDraw = true;
     }
 
-    public void generate(IGreyscaleGenerator2D generator) {
+    public void generate(IBooleanGenerator2D generator) {
         for (int i = 0; i < CHUNK_SIZE; i++) {
             for (int j = 0; j < CHUNK_SIZE; j++) {
                 int xCoord = x * CHUNK_SIZE + i;
                 int yCoord = y * CHUNK_SIZE + j;
-                float grey = generator.getValue(xCoord, yCoord) * 128 + 128;
-                setPixel(i, j, new Block(new Vector2i(xCoord, yCoord), Color.grey((int)grey)));
+                if (generator.getValue(xCoord, yCoord)) {
+                    setPixel(i, j, new Block(new Vector2i(xCoord, yCoord), Color.WHITE));
+                } else {
+                    setPixel(i, j, new Block(new Vector2i(xCoord, yCoord), Color.TRANSPARENT));
+                }
             }
         }
     }

@@ -8,7 +8,7 @@ import static org.lwjgl.opengl.GL20.*;
 
 public class ChunkRenderer {
 
-    private final int VERTEX_SIZE = 5;
+    private final int VERTEX_SIZE = 6;
 
     private final Chunk chunk;
     private final float[] vertices;
@@ -46,7 +46,7 @@ public class ChunkRenderer {
         glVertexAttribPointer(0, POS_SIZE, GL_FLOAT, false, VERTEX_SIZE_BYTES, POS_OFFSET);
         glEnableVertexAttribArray(0);
 
-        int COLOR_SIZE = 3;
+        int COLOR_SIZE = 4;
         int COLOR_OFFSET = POS_OFFSET + POS_SIZE * Float.BYTES;
         glVertexAttribPointer(1, COLOR_SIZE, GL_FLOAT, false, VERTEX_SIZE_BYTES, COLOR_OFFSET);
         glEnableVertexAttribArray(1);
@@ -77,6 +77,7 @@ public class ChunkRenderer {
                         vertices[offset + 2] = block.color.fGetR();
                         vertices[offset + 3] = block.color.fGetG();
                         vertices[offset + 4] = block.color.fGetB();
+                        vertices[offset + 5] = block.color.fGetA();
 
                         offset += VERTEX_SIZE;
                     }

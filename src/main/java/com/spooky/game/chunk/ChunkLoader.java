@@ -1,6 +1,7 @@
 package com.spooky.game.chunk;
 
 import com.spooky.engine.Camera;
+import com.spooky.game.noise.IBooleanGenerator2D;
 import com.spooky.game.noise.IGreyscaleGenerator2D;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
@@ -9,7 +10,7 @@ import org.joml.Vector2i;
  * Load and unload chunks based on a camera position.
  */
 public class ChunkLoader {
-    private final IGreyscaleGenerator2D generator2D;
+    private final IBooleanGenerator2D generator2D;
     private final Camera camera;
     private final int renderDistanceY;
     private final int renderDistanceX;
@@ -29,7 +30,7 @@ public class ChunkLoader {
         return new Vector2i(xChunks, yChunks);
     }
 
-    public ChunkLoader(int renderDistanceX, int renderDistanceY, IGreyscaleGenerator2D generator2D, Camera camera) {
+    public ChunkLoader(int renderDistanceX, int renderDistanceY, IBooleanGenerator2D generator2D, Camera camera) {
         this.renderDistanceX = renderDistanceX;
         this.renderDistanceY = renderDistanceY;
         this.generator2D = generator2D;
@@ -142,5 +143,18 @@ public class ChunkLoader {
                 chunks[i][j].render();
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        String output = "Loaded Chunks: \n";
+        for (int i = 0; i < chunks.length; i++) {
+            output += "\t";
+            for (int j = 0; j < chunks[i].length; j++) {
+                output += "(" + chunks[i][j].getX() + ", " + chunks[i][j].getY() + ")\t";
+            }
+            output += "\n";
+        }
+        return output;
     }
 }
