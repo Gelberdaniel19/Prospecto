@@ -9,6 +9,7 @@ public abstract class Scene {
 
     /**
      * Called once per frame.
+     *
      * @param deltaTime time elapsed in seconds since last call.
      */
     public abstract void update(float deltaTime);
@@ -19,7 +20,7 @@ public abstract class Scene {
     public void init() {
 
     }
-    
+
     public Camera getCamera() {
         return camera;
     }

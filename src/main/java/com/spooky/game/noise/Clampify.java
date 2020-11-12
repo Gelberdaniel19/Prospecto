@@ -12,13 +12,13 @@ public class Clampify implements IBooleanGenerator2D {
         this.generator = generator;
     }
 
+    public static Clampify build(IGreyscaleGenerator2D generator) {
+        return new Clampify(generator);
+    }
+
     public Clampify withThreshold(float threshold) {
         this.threshold = threshold;
         return this;
-    }
-
-    public static Clampify build(IGreyscaleGenerator2D generator) {
-        return new Clampify(generator);
     }
 
     @Override

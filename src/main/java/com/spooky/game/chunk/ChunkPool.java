@@ -24,10 +24,11 @@ public class ChunkPool extends TimerTask {
 
     /**
      * Pool distance should be at least one larger than render distance
-     * @param poolDistance how many chunks to each side o the player to make
-     *                     sure exist in the queue.
-     * @param cacheSize how many chunks to keep in-memory at once. even when
-     *                  chunks are outside the poolDistance, they may still
+     *
+     * @param poolDistance   how many chunks to each side o the player to make
+     *                       sure exist in the queue.
+     * @param cacheSize      how many chunks to keep in-memory at once. even when
+     *                       chunks are outside the poolDistance, they may still
      * @param cameraPosition position in the world of the camera. Update this
      *                       variable often!
      */
@@ -46,15 +47,10 @@ public class ChunkPool extends TimerTask {
      */
     public void update() {
         // Get chunk of camera
-        Vector2i camChunk = Chunk.getChunkAtCoord(cameraPosition);
+        Vector2i camChunk = ChunkUtils.getChunkAtCoord(cameraPosition);
 
         // Calculate which chunks need to be checked
-        List<Vector2i> checkChunks = new ArrayList<>();
-        for (int i = 0; i < poolDimensions.x; i++) {
-            for (int j = 0; j < poolDimensions.y; j++) {
-                checkChunks.add(new Vector2i(camChunk.x - poolDistance.x + i, camChunk.y - poolDistance.y + j));
-            }
-        }
+        List<Vector2i> checkChunks = ChunkUtils.getChunksInDistance(camChunk, poolDistance);
 
         // Remove chunks that are loaded, so I'm left with chunks that aren't loaded
         synchronized (chunkQueue) {
@@ -80,6 +76,7 @@ public class ChunkPool extends TimerTask {
     /**
      * Get the chunk given by the coordinates. This will also move
      * the chunk to the top of the cache so it's priority is refreshed.
+     *
      * @param chunkPos
      * @return
      */
@@ -98,6 +95,7 @@ public class ChunkPool extends TimerTask {
     /**
      * Add a chunk to the pool, and make sure that old chunks get
      * removed based on the cache size. Is thread safe.
+     *
      * @param chunkView chunk to add.
      */
     private void push(ChunkView chunkView) {

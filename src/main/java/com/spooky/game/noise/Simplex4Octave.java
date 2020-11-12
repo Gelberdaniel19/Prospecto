@@ -2,7 +2,7 @@ package com.spooky.game.noise;
 
 public class Simplex4Octave implements IGreyscaleGenerator2D {
 
-    private FastNoiseLite noise;
+    private final FastNoiseLite noise;
 
     private Simplex4Octave(int seed) {
         noise = new FastNoiseLite();
@@ -14,7 +14,7 @@ public class Simplex4Octave implements IGreyscaleGenerator2D {
     }
 
     public static Simplex4Octave fromRandomSeed() {
-        return new Simplex4Octave((int)(Math.random() * Integer.MAX_VALUE));
+        return new Simplex4Octave((int) (Math.random() * Integer.MAX_VALUE));
     }
 
     public static Simplex4Octave fromSeed(int seed) {

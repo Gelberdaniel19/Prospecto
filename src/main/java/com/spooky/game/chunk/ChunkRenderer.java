@@ -1,13 +1,15 @@
 package com.spooky.game.chunk;
 
-import com.spooky.engine.Shader;
 import com.spooky.engine.Camera;
+import com.spooky.engine.Shader;
 
-import static org.lwjgl.opengl.ARBVertexArrayObject.*;
+import static org.lwjgl.opengl.ARBVertexArrayObject.glBindVertexArray;
+import static org.lwjgl.opengl.ARBVertexArrayObject.glGenVertexArrays;
 import static org.lwjgl.opengl.GL20.*;
 
 /**
- * Holds a chunk view and draws it
+ * Holds a ChunkView and is in charge of making sure
+ * the vertex array is updated. Draws the chunk.
  */
 public class ChunkRenderer {
 

@@ -2,9 +2,12 @@ package com.spooky.game.chunk;
 
 import com.spooky.engine.Color;
 import com.spooky.game.noise.IBooleanGenerator2D;
-import org.joml.Vector2f;
 import org.joml.Vector2i;
 
+/**
+ * A chunk represented completely separately from
+ * the rendering system.
+ */
 public class Chunk {
     // Width and height of each chunk
     public static final int CHUNK_SIZE = 128;
@@ -36,6 +39,7 @@ public class Chunk {
 
     /**
      * Replaces the pixel at the coordinate with the pixel p.
+     *
      * @param x coordinate in chunk.
      * @param y coordinate in chunk.
      * @param p new pixel.
@@ -46,8 +50,9 @@ public class Chunk {
 
     /**
      * Sets the color of the pixel at given coordinates.
-     * @param x coordinate in chunk.
-     * @param y coordinate in chunk.
+     *
+     * @param x     coordinate in chunk.
+     * @param y     coordinate in chunk.
      * @param color new color.
      */
     public void setPixelColor(int x, int y, Color color) {
@@ -58,6 +63,7 @@ public class Chunk {
      * Returns a copy of the pixel at the coordinates.
      * Modifying this pixel will not change its actual value. To change
      * the pixel's data, use a setter function.
+     *
      * @param x coordinate in chunk.
      * @param y coordinate in chunk.
      * @return copy of the pixel.
@@ -65,31 +71,6 @@ public class Chunk {
     public Block getBlock(int x, int y) {
         return chunkBlocks[x][y].copy();
     }
-
-    /**
-     * Returns the chunk coordinates of the chunk at world position x, y
-     * @param worldCoord coordinates in the world to get the containing chunk of.
-     * @return chunk coordinates of the chunk.
-     */
-    public static Vector2i getChunkAtCoord(Vector2i worldCoord) {
-        Vector2i ret = new Vector2i(worldCoord.x / CHUNK_SIZE, worldCoord.y / CHUNK_SIZE);
-        if (worldCoord.y < 0) ret.y--;
-        if (worldCoord.x < 0) ret.x--;
-        return ret;
-    }
-
-    /**
-     * Returns the chunk coordinates of the chunk at world position x, y.
-     * @param worldCoord coordinates in the world to get the containing chunk of.
-     * @return chunk coordinates of the chunk.
-     */
-    public static Vector2i getChunkAtCoord(Vector2f worldCoord) {
-        Vector2i ret = new Vector2i((int)(worldCoord.x / CHUNK_SIZE), (int)(worldCoord.y / CHUNK_SIZE));
-        if (worldCoord.y < 0) ret.y--;
-        if (worldCoord.x < 0) ret.x--;
-        return ret;
-    }
-
 
     public Vector2i getChunkPos() {
         return chunkPos;

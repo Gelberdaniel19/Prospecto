@@ -6,7 +6,9 @@ import com.spooky.engine.Scene;
 import com.spooky.game.chunk.Chunk;
 import com.spooky.game.chunk.ChunkLoader;
 import com.spooky.game.chunk.ChunkPool;
-import com.spooky.game.noise.*;
+import com.spooky.game.noise.Clampify;
+import com.spooky.game.noise.IBooleanGenerator2D;
+import com.spooky.game.noise.Simplex;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 

@@ -7,7 +7,8 @@ import com.spooky.engine.MathUtils;
  */
 public class Combine implements IGreyscaleGenerator2D {
 
-    private IGreyscaleGenerator2D gen1, gen2;
+    private final IGreyscaleGenerator2D gen1;
+    private final IGreyscaleGenerator2D gen2;
 
     private Combine(IGreyscaleGenerator2D gen1, IGreyscaleGenerator2D gen2) {
         this.gen1 = gen1;

@@ -5,7 +5,7 @@ package com.spooky.game.noise;
  */
 public class Remap implements IGreyscaleGenerator2D {
 
-    private IGreyscaleGenerator2D generator;
+    private final IGreyscaleGenerator2D generator;
     private float fromMin = -1f;
     private float fromMax = 1f;
     private float toMin = -1f;

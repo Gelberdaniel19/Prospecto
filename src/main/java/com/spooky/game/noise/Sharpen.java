@@ -2,7 +2,7 @@ package com.spooky.game.noise;
 
 public class Sharpen implements IGreyscaleGenerator2D {
 
-    private IGreyscaleGenerator2D generator;
+    private final IGreyscaleGenerator2D generator;
     private int iterations;
 
     public Sharpen(IGreyscaleGenerator2D generator) {

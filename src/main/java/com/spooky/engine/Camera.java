@@ -20,8 +20,8 @@ public class Camera {
 
     public void adjustProjectionToPixelsPerBlock(int pixelsPerBlock) {
         projectionMatrix.identity();
-        float windowUnitsWide = (float)Window.getWidth() / pixelsPerBlock;
-        float windowUnitsTall = (float)Window.getHeight() / pixelsPerBlock;
+        float windowUnitsWide = (float) Window.getWidth() / pixelsPerBlock;
+        float windowUnitsTall = (float) Window.getHeight() / pixelsPerBlock;
         projectionMatrix.ortho(-windowUnitsWide / 2, windowUnitsWide / 2,
                 -windowUnitsTall / 2, windowUnitsTall / 2,
                 0.0f, 100.0f);

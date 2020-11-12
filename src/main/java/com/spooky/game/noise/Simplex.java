@@ -2,7 +2,7 @@ package com.spooky.game.noise;
 
 public class Simplex implements IGreyscaleGenerator2D {
 
-    private FastNoiseLite noise;
+    private final FastNoiseLite noise;
 
     private Simplex(int seed) {
         noise = new FastNoiseLite();
@@ -11,6 +11,14 @@ public class Simplex implements IGreyscaleGenerator2D {
         noise.SetFrequency(0.005f);
         noise.SetFractalType(FastNoiseLite.FractalType.FBm);
         noise.SetFractalOctaves(1);
+    }
+
+    public static Simplex buildRandom() {
+        return new Simplex((int) (Math.random() * Integer.MAX_VALUE));
+    }
+
+    public static Simplex buildWithSeed(int seed) {
+        return new Simplex(seed);
     }
 
     public Simplex withNoiseType(FastNoiseLite.NoiseType noiseType) {
@@ -32,14 +40,6 @@ public class Simplex implements IGreyscaleGenerator2D {
     public Simplex withFractal(int octaves) {
         noise.SetFractalOctaves(octaves);
         return this;
-    }
-
-    public static Simplex buildRandom() {
-        return new Simplex((int)(Math.random() * Integer.MAX_VALUE));
-    }
-
-    public static Simplex buildWithSeed(int seed) {
-        return new Simplex(seed);
     }
 
     @Override

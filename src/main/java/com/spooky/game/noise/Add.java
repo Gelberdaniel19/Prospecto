@@ -5,7 +5,8 @@ package com.spooky.game.noise;
  */
 public class Add implements IGreyscaleGenerator2D {
 
-    private IGreyscaleGenerator2D gen1, gen2;
+    private final IGreyscaleGenerator2D gen1;
+    private final IGreyscaleGenerator2D gen2;
 
     private Add(IGreyscaleGenerator2D gen1, IGreyscaleGenerator2D gen2) {
         this.gen1 = gen1;

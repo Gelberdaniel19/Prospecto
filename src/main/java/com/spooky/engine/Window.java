@@ -14,14 +14,12 @@ import org.lwjgl.system.MemoryUtil;
  */
 public class Window {
 
-    private int width;
-    private int height;
-    private String title;
-    private long glfwWindow;
-
     private static Window instance = null;
-
     private static Scene currentScene;
+    private final int width;
+    private final int height;
+    private final String title;
+    private long glfwWindow;
 
     private Window() {
         this.width = 1080;
@@ -31,6 +29,7 @@ public class Window {
 
     /**
      * Change scenes.
+     *
      * @param sceneIndex the index of the scene to switch to.
      */
     public static void changeScene(int sceneIndex) {
@@ -46,6 +45,18 @@ public class Window {
             instance = new Window();
         }
         return instance;
+    }
+
+    public static int getWidth() {
+        return get().width;
+    }
+
+    public static int getHeight() {
+        return get().height;
+    }
+
+    public static Scene getScene() {
+        return currentScene;
     }
 
     /**
@@ -96,7 +107,7 @@ public class Window {
         GLFW.glfwMakeContextCurrent(glfwWindow);
 
         // Enable VSync
-        GLFW.glfwSwapInterval(0);
+        GLFW.glfwSwapInterval(1);
 
         // Make the window visible
         GLFW.glfwShowWindow(glfwWindow);
@@ -109,7 +120,7 @@ public class Window {
     }
 
     private void loop() {
-        float beginTime = (float)GLFW.glfwGetTime();
+        float beginTime = (float) GLFW.glfwGetTime();
         float endTime;
         float dt = -1.0f;
 
@@ -130,21 +141,9 @@ public class Window {
             GLFW.glfwSwapBuffers(glfwWindow);
 
             // Update time
-            endTime = (float)GLFW.glfwGetTime();
+            endTime = (float) GLFW.glfwGetTime();
             dt = endTime - beginTime;
             beginTime = endTime;
         }
-    }
-
-    public static int getWidth() {
-        return get().width;
-    }
-
-    public static int getHeight() {
-        return get().height;
-    }
-
-    public static Scene getScene() {
-        return currentScene;
     }
 }

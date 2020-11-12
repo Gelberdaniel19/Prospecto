@@ -10,6 +10,10 @@ public class PositionOutput implements IGreyscaleGenerator2D {
     private float yMultiplier = 0;
     private float yOffset = 0;
 
+    public static PositionOutput build() {
+        return new PositionOutput();
+    }
+
     public PositionOutput withYMult(float yMultiplier) {
         this.yMultiplier = yMultiplier;
         return this;
@@ -18,10 +22,6 @@ public class PositionOutput implements IGreyscaleGenerator2D {
     public PositionOutput withYOff(float yOffset) {
         this.yOffset = yOffset;
         return this;
-    }
-
-    public static PositionOutput build() {
-        return new PositionOutput();
     }
 
     @Override

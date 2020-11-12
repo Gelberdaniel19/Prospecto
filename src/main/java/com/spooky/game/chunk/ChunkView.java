@@ -3,6 +3,10 @@ package com.spooky.game.chunk;
 import com.spooky.engine.Color;
 import org.joml.Vector2i;
 
+/**
+ * A chunk which also keeps its vertex array and has the
+ * ability to update it's vertex array.
+ */
 public class ChunkView extends Chunk {
 
     public final static int VERTEX_SIZE = 6;

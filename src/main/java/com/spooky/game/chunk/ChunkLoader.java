@@ -26,19 +26,15 @@ public class ChunkLoader {
     /**
      * Make sure out of range chunks are unloaded and new in-range
      * chunks are loaded.
+     *
      * @param cameraWorldPosition world position of the camera.
      */
     public void update(Vector2f cameraWorldPosition) {
         // Get the chunk of the camera
-        Vector2i camChunk = Chunk.getChunkAtCoord(cameraWorldPosition);
+        Vector2i camChunk = ChunkUtils.getChunkAtCoord(cameraWorldPosition);
 
         // Calculate which chunks need to be checked
-        List<Vector2i> checkChunks = new ArrayList<>();
-        for (int i = 0; i < 2 * renderDist.x + 1; i++) {
-            for (int j = 0; j < 2 * renderDist.y + 1; j++) {
-                checkChunks.add(new Vector2i(camChunk.x - renderDist.x + i, camChunk.y - renderDist.y + j));
-            }
-        }
+        List<Vector2i> checkChunks = ChunkUtils.getChunksInDistance(camChunk, renderDist);
 
         // Remove coords which are loaded, leaving unloaded ones left
         for (ChunkRenderer renderer : chunks) {
@@ -76,24 +72,10 @@ public class ChunkLoader {
     }
 
     // Render all the chunks which are loader
-    public void render(){
+    public void render() {
         for (ChunkRenderer renderer : chunks) {
             renderer.render(camera);
         }
-    }
-
-    /**
-     * Get the number of chunks that will fit on the screen in both directions.
-     * @param blocksPerChunk number of blocks in a chunk.
-     * @param blockSize number of pixels per block.
-     * @param windowWidth pixel width of window.
-     * @param windowHeight pixel height of window.
-     * @return x and y count of chunks that could fit on the screen
-     */
-    public static Vector2i getChunksOnScreen(int blocksPerChunk, int blockSize, int windowWidth, int windowHeight){
-        int xChunks = (int)((float)windowWidth/blockSize/blocksPerChunk)+2;
-        int yChunks = (int)((float)windowHeight/blockSize/blocksPerChunk)+2;
-        return new Vector2i(xChunks, yChunks);
     }
 
     @Override

@@ -12,12 +12,10 @@ import static org.lwjgl.opengl.GL20.*;
 
 public class Shader {
 
-    private int shaderID;
-    private final FloatBuffer matBuffer;
+    private static final FloatBuffer matBuffer = BufferUtils.createFloatBuffer(16);
+    private final int shaderID;
 
     public Shader(String vertexFilepath, String fragmentFilepath) {
-        matBuffer = BufferUtils.createFloatBuffer(16);
-
         // Get source code of vertex and fragment
         String vertexShader = "", fragmentShader = "";
         try {
@@ -37,7 +35,7 @@ public class Shader {
         glCompileShader(vertexID);
 
         // Check for errors
-        int success =  glGetShaderi(vertexID, GL_COMPILE_STATUS);
+        int success = glGetShaderi(vertexID, GL_COMPILE_STATUS);
         if (success == GL_FALSE) {
             int len = glGetShaderi(vertexID, GL_INFO_LOG_LENGTH);
             System.out.println("Error: " + vertexFilepath + " failed to compile");
@@ -51,7 +49,7 @@ public class Shader {
         glCompileShader(fragmentID);
 
         // Check for errors
-        success =  glGetShaderi(fragmentID, GL_COMPILE_STATUS);
+        success = glGetShaderi(fragmentID, GL_COMPILE_STATUS);
         if (success == GL_FALSE) {
             int len = glGetShaderi(fragmentID, GL_INFO_LOG_LENGTH);
             System.out.println("Error: " + fragmentFilepath + " failed to compile");

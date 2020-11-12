@@ -8,7 +8,7 @@ import org.lwjgl.glfw.GLFW;
 public class KeyListener {
 
     private static KeyListener instance;
-    private boolean keyPressed[] = new boolean[350];
+    private final boolean[] keyPressed = new boolean[350];
 
     private KeyListener() {
 
@@ -32,6 +32,7 @@ public class KeyListener {
 
     /**
      * Returns whether or not a given key is pressed.
+     *
      * @param keyCode the key code of the key EX. KeyEvent.VK_SPACE
      * @return true if the key is pressed.
      */
