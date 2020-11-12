@@ -118,7 +118,7 @@ public class Window {
             GLFW.glfwPollEvents();
 
             // Clear screen
-            GL11.glClearColor(0.5f, 0, 1, 1);
+            GL11.glClearColor(0, 0, 0, 1);
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
             // Update game after first frame

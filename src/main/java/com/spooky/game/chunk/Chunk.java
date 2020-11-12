@@ -2,36 +2,33 @@ package com.spooky.game.chunk;
 
 import com.spooky.engine.Color;
 import com.spooky.game.noise.IBooleanGenerator2D;
+import org.joml.Vector2f;
 import org.joml.Vector2i;
 
 public class Chunk {
     // Width and height of each chunk
-    public static final int CHUNK_SIZE = 4;
+    public static final int CHUNK_SIZE = 128;
 
     // Position of the chunk is where the bottom left is times 128
-    private int x;
-    private int y;
+    protected final Vector2i chunkPos;
 
     // Actual data held by chunk
-    private Block[][] chunkBlocks = new Block[CHUNK_SIZE][CHUNK_SIZE];
+    protected final Block[][] chunkBlocks = new Block[CHUNK_SIZE][CHUNK_SIZE];
 
-    private boolean updatedSinceDraw;
-
-    public Chunk(int x, int y) {
-        this.x = x;
-        this.y = y;
-        updatedSinceDraw = true;
+    public Chunk(Vector2i chunkCoords) {
+        this.chunkPos = chunkCoords;
     }
 
     public void generate(IBooleanGenerator2D generator) {
         for (int i = 0; i < CHUNK_SIZE; i++) {
             for (int j = 0; j < CHUNK_SIZE; j++) {
-                int xCoord = x * CHUNK_SIZE + i;
-                int yCoord = y * CHUNK_SIZE + j;
-                if (generator.getValue(xCoord, yCoord)) {
-                    setPixel(i, j, new Block(new Vector2i(xCoord, yCoord), Color.WHITE));
+                Vector2i worldCoords = new Vector2i(chunkPos.x * CHUNK_SIZE + i, chunkPos.y * CHUNK_SIZE + j);
+                boolean isBlock = generator.getValue(worldCoords.x, worldCoords.y);
+                setPixel(i, j, new Block(worldCoords, isBlock ? Color.WHITE : Color.TRANSPARENT));
+                if (generator.getValue(worldCoords.x, worldCoords.y)) {
+                    setPixel(i, j, new Block(worldCoords, Color.WHITE));
                 } else {
-                    setPixel(i, j, new Block(new Vector2i(xCoord, yCoord), Color.TRANSPARENT));
+                    setPixel(i, j, new Block(worldCoords, Color.TRANSPARENT));
                 }
             }
         }
@@ -45,7 +42,6 @@ public class Chunk {
      */
     public void setPixel(int x, int y, Block p) {
         chunkBlocks[x][y] = p;
-        updatedSinceDraw = true;
     }
 
     /**
@@ -56,7 +52,6 @@ public class Chunk {
      */
     public void setPixelColor(int x, int y, Color color) {
         chunkBlocks[x][y].color = color;
-        updatedSinceDraw = true;
     }
 
     /**
@@ -71,33 +66,39 @@ public class Chunk {
         return chunkBlocks[x][y].copy();
     }
 
-    public void setUpdatedSinceDraw(boolean val) {
-        updatedSinceDraw = val;
-    }
-
-    public boolean isUpdatedSinceDraw() {
-        return updatedSinceDraw;
-    }
-
     /**
      * Returns the chunk coordinates of the chunk at world position x, y
-     * @param x coordinate in world.
-     * @param y coordinate in world.
+     * @param worldCoord coordinates in the world to get the containing chunk of.
      * @return chunk coordinates of the chunk.
      */
-    public static Vector2i getChunkAtCoord(int x, int y) {
-        Vector2i ret = new Vector2i(x / CHUNK_SIZE, y / CHUNK_SIZE);
-        if (y < 0) ret.y--;
-        if (x < 0) ret.x--;
+    public static Vector2i getChunkAtCoord(Vector2i worldCoord) {
+        Vector2i ret = new Vector2i(worldCoord.x / CHUNK_SIZE, worldCoord.y / CHUNK_SIZE);
+        if (worldCoord.y < 0) ret.y--;
+        if (worldCoord.x < 0) ret.x--;
         return ret;
     }
 
-    public int getX() {
-        return x;
+    /**
+     * Returns the chunk coordinates of the chunk at world position x, y.
+     * @param worldCoord coordinates in the world to get the containing chunk of.
+     * @return chunk coordinates of the chunk.
+     */
+    public static Vector2i getChunkAtCoord(Vector2f worldCoord) {
+        Vector2i ret = new Vector2i((int)(worldCoord.x / CHUNK_SIZE), (int)(worldCoord.y / CHUNK_SIZE));
+        if (worldCoord.y < 0) ret.y--;
+        if (worldCoord.x < 0) ret.x--;
+        return ret;
     }
 
-    public int getY() {
-        return y;
+
+    public Vector2i getChunkPos() {
+        return chunkPos;
     }
 
+    @Override
+    public String toString() {
+        return "Chunk{" +
+                "chunkPos=" + chunkPos +
+                '}';
+    }
 }
