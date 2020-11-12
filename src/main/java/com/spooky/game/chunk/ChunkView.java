@@ -5,63 +5,78 @@ import org.joml.Vector2i;
 
 public class ChunkView extends Chunk {
 
-    private final int VERTEX_SIZE = 6;
-    private final int MAX_BATCH_SIZE = Chunk.CHUNK_SIZE * Chunk.CHUNK_SIZE;
+    public final static int VERTEX_SIZE = 6;
+    public final static int MAX_BATCH_SIZE = Chunk.CHUNK_SIZE * Chunk.CHUNK_SIZE;
+
     private final float[] vertices;
     private final int[] indices;
 
     // Tells classes whether or not it needs to be updated
-    protected boolean needsToUpdate = true;
+    protected boolean needsToUpdateModel = true;
+    protected boolean needsToUpdateView = true;
 
     public ChunkView(Vector2i chunkCoords) {
         super(chunkCoords);
-        this.vertices = new float[MAX_BATCH_SIZE * 4 * VERTEX_SIZE];;
+        this.vertices = new float[MAX_BATCH_SIZE * 4 * VERTEX_SIZE];
         this.indices = generateIndices();
     }
 
     public void updateVertices() {
-        // For all blocks in the chunk
-        for (int i = 0; i < Chunk.CHUNK_SIZE; i++) {
-            for (int j = 0; j < Chunk.CHUNK_SIZE; j++) {
-                // Find offset within vertex array
-                int index = i * Chunk.CHUNK_SIZE + j;
-                int offset = index * 4 * VERTEX_SIZE;
+        synchronized (vertices) {
+            // For all blocks in the chunk
+            for (int i = 0; i < Chunk.CHUNK_SIZE; i++) {
+                for (int j = 0; j < Chunk.CHUNK_SIZE; j++) {
+                    // Find offset within vertex array
+                    int index = i * Chunk.CHUNK_SIZE + j;
+                    int offset = index * 4 * VERTEX_SIZE;
 
-                // Add vertices with the appropriate properties
-                float xAdd = 1.0f;
-                float yAdd = 1.0f;
-                for (int k = 0; k < 4; k++) {
-                    if (k == 1) yAdd = 0.0f;
-                    else if (k == 2) xAdd = 0.0f;
-                    else if (k == 3) yAdd = 1.0f;
+                    // Add vertices with the appropriate properties
+                    float xAdd = 1.0f;
+                    float yAdd = 1.0f;
+                    for (int k = 0; k < 4; k++) {
+                        if (k == 1) yAdd = 0.0f;
+                        else if (k == 2) xAdd = 0.0f;
+                        else if (k == 3) yAdd = 1.0f;
 
-                    // Set position and color into vertex array
-                    Block block = chunkBlocks[i][j];
-                    vertices[offset + 0] = block.pos.x + xAdd;
-                    vertices[offset + 1] = block.pos.y + yAdd;
-                    vertices[offset + 2] = block.color.fGetR();
-                    vertices[offset + 3] = block.color.fGetG();
-                    vertices[offset + 4] = block.color.fGetB();
-                    vertices[offset + 5] = block.color.fGetA();
+                        // Set position and color into vertex array
+                        Block block = chunkBlocks[i][j];
+                        vertices[offset + 0] = block.pos.x + xAdd;
+                        vertices[offset + 1] = block.pos.y + yAdd;
+                        vertices[offset + 2] = block.color.fGetR();
+                        vertices[offset + 3] = block.color.fGetG();
+                        vertices[offset + 4] = block.color.fGetB();
+                        vertices[offset + 5] = block.color.fGetA();
 
-                    offset += VERTEX_SIZE;
+                        offset += VERTEX_SIZE;
+                    }
                 }
             }
+
+            needsToUpdateModel = false;
+            needsToUpdateView = true;
         }
-
-        needsToUpdate = false;
     }
 
-    public boolean needsToUpdate() {
-        return needsToUpdate;
+    public boolean needsToUpdateModel() {
+        return needsToUpdateModel;
     }
 
-    public void setNeedsToUpdate(boolean needsToUpdate) {
-        this.needsToUpdate = needsToUpdate;
+    public void setNeedsToUpdateModel(boolean needsToUpdateModel) {
+        this.needsToUpdateModel = needsToUpdateModel;
+    }
+
+    public boolean needsToUpdateView() {
+        return needsToUpdateView;
+    }
+
+    public void setNeedsToUpdateView(boolean needsToUpdateView) {
+        this.needsToUpdateView = needsToUpdateView;
     }
 
     public float[] getVertices() {
-        return vertices;
+        synchronized (vertices) {
+            return vertices;
+        }
     }
 
     public int[] getIndices() {
@@ -71,13 +86,13 @@ public class ChunkView extends Chunk {
     @Override
     public void setPixel(int x, int y, Block p) {
         super.setPixel(x, y, p);
-        needsToUpdate = true;
+        needsToUpdateModel = true;
     }
 
     @Override
     public void setPixelColor(int x, int y, Color color) {
         super.setPixelColor(x, y, color);
-        needsToUpdate = true;
+        needsToUpdateModel = true;
     }
 
 

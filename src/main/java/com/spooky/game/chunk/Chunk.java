@@ -98,7 +98,7 @@ public class Chunk {
     @Override
     public String toString() {
         return "Chunk{" +
-                "chunkPos=" + chunkPos +
+                "pos=(" + chunkPos.x + ", " + chunkPos.y + ")" +
                 '}';
     }
 }

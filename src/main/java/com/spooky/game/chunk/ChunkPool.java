@@ -7,7 +7,6 @@ import org.joml.Vector2i;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * A thread safe class that contains no display functions. This class,
@@ -46,9 +45,6 @@ public class ChunkPool extends TimerTask {
      * Slowest on first execution as all chunks need to be loaded.
      */
     public void update() {
-        System.out.println("Updating pool");
-        long startTime = System.currentTimeMillis();
-
         // Get chunk of camera
         Vector2i camChunk = Chunk.getChunkAtCoord(cameraPosition);
 
@@ -77,14 +73,22 @@ public class ChunkPool extends TimerTask {
             chunk.generate(generator);
             chunk.updateVertices();
             push(chunk);
+            //System.out.println("POOL: loaded " + chunk);
         }
-
-        System.out.println("\tPool done in " + (System.currentTimeMillis() - startTime) + "ms");
     }
 
+    /**
+     * Get the chunk given by the coordinates. This will also move
+     * the chunk to the top of the cache so it's priority is refreshed.
+     * @param chunkPos
+     * @return
+     */
     public ChunkView get(Vector2i chunkPos) {
-        for (ChunkView chunk : chunkQueue) {
-            if (chunk.getChunkPos().equals(chunkPos)) {
+        for (int i = 0; i < chunkQueue.size(); i++) {
+            if (chunkQueue.get(i).getChunkPos().equals(chunkPos)) {
+                ChunkView chunk = chunkQueue.get(i);
+                chunkQueue.remove(i);
+                chunkQueue.add(chunk);
                 return chunk;
             }
         }
@@ -100,6 +104,7 @@ public class ChunkPool extends TimerTask {
         // Make sure the size doesn't go over the cacheSize
         synchronized (chunkQueue) {
             if (chunkQueue.size() >= cacheSize) {
+                //System.out.println("POOL: unloaded " + chunkQueue.get(0));
                 chunkQueue.remove(0);
             }
             chunkQueue.add(chunkView);
