@@ -13,8 +13,11 @@ import static org.lwjgl.opengl.GL20.*;
 public class Shader {
 
     private int shaderID;
+    private final FloatBuffer matBuffer;
 
     public Shader(String vertexFilepath, String fragmentFilepath) {
+        matBuffer = BufferUtils.createFloatBuffer(16);
+
         // Get source code of vertex and fragment
         String vertexShader = "", fragmentShader = "";
         try {
@@ -82,7 +85,6 @@ public class Shader {
 
     public void uploadMat4f(String varName, Matrix4f mat) {
         int varLocation = glGetUniformLocation(shaderID, varName);
-        FloatBuffer matBuffer = BufferUtils.createFloatBuffer(16);
         mat.get(matBuffer);
         glUniformMatrix4fv(varLocation, false, matBuffer);
     }

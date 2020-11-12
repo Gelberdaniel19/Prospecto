@@ -27,7 +27,7 @@ public class ExampleScene extends Scene {
 
     @Override
     public void update(float deltaTime) {
-        if (Math.random() > 0.95) System.out.println(1/deltaTime);
+        //if (Math.random() > 0.95) System.out.println(1/deltaTime);
 
         // Camera panning
         if (KeyListener.isKeyPressed(KeyEvent.VK_A)) camera.move(new Vector2f(-PAN_SPEED * deltaTime, 0.0f));
