@@ -18,7 +18,6 @@ public class ChunkPool extends TimerTask {
     private final List<ChunkView> chunkQueue;
     private final Vector2i poolDistance;
     private final int cacheSize;
-    private final Vector2i poolDimensions;
     private final IBooleanGenerator2D generator;
     private Vector2f cameraPosition;
 
@@ -27,18 +26,19 @@ public class ChunkPool extends TimerTask {
      *
      * @param poolDistance   how many chunks to each side o the player to make
      *                       sure exist in the queue.
-     * @param cacheSize      how many chunks to keep in-memory at once. even when
-     *                       chunks are outside the poolDistance, they may still
+     * @param additionalCacheSize   how many additional chunks to keep in cache
+     *                              in case they need to be reloaded.
      * @param cameraPosition position in the world of the camera. Update this
      *                       variable often!
      */
-    public ChunkPool(Vector2i poolDistance, int cacheSize, IBooleanGenerator2D generator, Vector2f cameraPosition) {
+    public ChunkPool(Vector2i poolDistance, int additionalCacheSize, IBooleanGenerator2D generator, Vector2f cameraPosition) {
         this.poolDistance = poolDistance;
-        this.poolDimensions = new Vector2i(poolDistance.x * 2 + 1, poolDistance.y * 2 + 1);
-        this.cacheSize = cacheSize;
+        this.cacheSize = (poolDistance.x * 2 + 1) * (poolDistance.y * 2 + 1) + additionalCacheSize;
         this.cameraPosition = cameraPosition;
         this.chunkQueue = new ArrayList<>();
         this.generator = generator;
+
+        // Cache size must be at least as large as the number of
     }
 
     /**
@@ -69,7 +69,6 @@ public class ChunkPool extends TimerTask {
             chunk.generate(generator);
             chunk.updateVertices();
             push(chunk);
-            //System.out.println("POOL: loaded " + chunk);
         }
     }
 
@@ -102,7 +101,6 @@ public class ChunkPool extends TimerTask {
         // Make sure the size doesn't go over the cacheSize
         synchronized (chunkQueue) {
             if (chunkQueue.size() >= cacheSize) {
-                //System.out.println("POOL: unloaded " + chunkQueue.get(0));
                 chunkQueue.remove(0);
             }
             chunkQueue.add(chunkView);
