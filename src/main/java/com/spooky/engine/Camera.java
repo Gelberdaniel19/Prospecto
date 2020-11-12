@@ -49,4 +49,8 @@ public class Camera {
     public Vector2f getPosition() {
         return position;
     }
+
+    public Vector2f getPositionCopy() {
+        return new Vector2f(position.x, position.y);
+    }
 }

@@ -6,19 +6,22 @@ import org.joml.Vector2i;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * A thread safe class that contains no display functions. This class,
  * if updated often enough, will ensure that any chunks within the
  * poolDistance will be loaded, including vertex data.
  */
-public class ChunkPool {
+public class ChunkPool extends TimerTask {
 
     private final List<ChunkView> chunkQueue;
     private final Vector2i poolDistance;
     private final int cacheSize;
     private final Vector2i poolDimensions;
     private final IBooleanGenerator2D generator;
+    private Vector2f cameraPosition;
 
     /**
      * Pool distance should be at least one larger than render distance
@@ -26,12 +29,14 @@ public class ChunkPool {
      *                     sure exist in the queue.
      * @param cacheSize how many chunks to keep in-memory at once. even when
      *                  chunks are outside the poolDistance, they may still
-     *                  be saved and easily accessible.
+     * @param cameraPosition position in the world of the camera. Update this
+     *                       variable often!
      */
-    public ChunkPool(Vector2i poolDistance, int cacheSize, IBooleanGenerator2D generator) {
+    public ChunkPool(Vector2i poolDistance, int cacheSize, IBooleanGenerator2D generator, Vector2f cameraPosition) {
         this.poolDistance = poolDistance;
         this.poolDimensions = new Vector2i(poolDistance.x * 2 + 1, poolDistance.y * 2 + 1);
         this.cacheSize = cacheSize;
+        this.cameraPosition = cameraPosition;
         this.chunkQueue = new ArrayList<>();
         this.generator = generator;
     }
@@ -39,10 +44,11 @@ public class ChunkPool {
     /**
      * Make sure that all chunks within poolDistance of the camera are loaded.
      * Slowest on first execution as all chunks need to be loaded.
-     * @param cameraPosition world position of the camera around which the
-     *                       chunk pool is centered.
      */
-    public void update(Vector2f cameraPosition) {
+    public void update() {
+        System.out.println("Updating pool");
+        long startTime = System.currentTimeMillis();
+
         // Get chunk of camera
         Vector2i camChunk = Chunk.getChunkAtCoord(cameraPosition);
 
@@ -72,6 +78,8 @@ public class ChunkPool {
             chunk.updateVertices();
             push(chunk);
         }
+
+        System.out.println("\tPool done in " + (System.currentTimeMillis() - startTime) + "ms");
     }
 
     public ChunkView get(Vector2i chunkPos) {
@@ -98,4 +106,17 @@ public class ChunkPool {
         }
     }
 
+    public void setCameraPosition(Vector2f cameraPosition) {
+        this.cameraPosition = cameraPosition;
+    }
+
+    /**
+     * Update the chunk pool based on the camera position.
+     * You should call setCameraPosition before this.
+     * If the pool is being updated currently, this will do nothing.
+     */
+    @Override
+    public void run() {
+        update();
+    }
 }

@@ -8,6 +8,8 @@ import com.spooky.game.noise.*;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 
+import java.util.Timer;
+
 /**
  * Example scene class
  * <p>
@@ -49,12 +51,8 @@ public class ExampleScene extends Scene {
 //        chunkLoader = new ChunkLoader(2, 2, mapGenerator, camera);
 //        chunkLoader.update(camera.getPosition());
 
-        ChunkPool pool = new ChunkPool(new Vector2i(2, 2), 50, mapGenerator);
-        pool.update(camera.getPosition());
-        for (int i = -2; i <= 2; i++) {
-            for (int j = -2; j <= 2; j++) {
-                System.out.println(pool.get(new Vector2i(i, j)));
-            }
-        }
+        ChunkPool pool = new ChunkPool(new Vector2i(2, 2), 50, mapGenerator, camera.getPositionCopy());
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(pool, 0, 300);
     }
 }
